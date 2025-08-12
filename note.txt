@@ -1,0 +1,4 @@
+
+    - user1@hmsg.fun / user123456 (team B, user role)
+    - user2@hmsg.fun / user123456 (team A, sẽ bị block)
+    - admin@hmsg.fun / admin123456
