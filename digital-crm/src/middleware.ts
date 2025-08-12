@@ -57,8 +57,8 @@ export async function middleware(request: NextRequest) {
   // Refresh session if expired
   const { data: { user } } = await supabase.auth.getUser()
 
-  // Protected routes
-  const protectedPaths = ['/dashboard', '/settings']
+  // Protected routes (require authentication)
+  const protectedPaths = ['/dashboard', '/settings', '/digital']
   const isProtectedPath = protectedPaths.some(path => 
     request.nextUrl.pathname.startsWith(path)
   )
@@ -73,8 +73,8 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/dashboard', request.url))
   }
 
-  // Check team access for dashboard (only team 'b' can access)
-  if (request.nextUrl.pathname.startsWith('/dashboard') && user) {
+  // Check team access for Digital module (only team 'b' can access)
+  if (request.nextUrl.pathname.startsWith('/digital') && user) {
     const { data: userProfile } = await supabase
       .from('users')
       .select('team')

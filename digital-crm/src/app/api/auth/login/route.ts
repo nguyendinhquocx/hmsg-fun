@@ -42,14 +42,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Check team access
-    if (userProfile.team !== 'b') {
-      await supabase.auth.signOut()
-      return NextResponse.json(
-        { error: 'Bạn không có quyền truy cập module Digital' },
-        { status: 403 }
-      )
-    }
+    // All users can login to main dashboard
+    // Team-specific access will be handled in UI
 
     // Success
     return NextResponse.json({

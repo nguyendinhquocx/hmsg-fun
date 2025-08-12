@@ -1,8 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
+import { useRouter, usePathname } from 'next/navigation'
 import { LogOut, Settings, User } from 'lucide-react'
 
 interface User {
@@ -17,21 +16,19 @@ export default function Header() {
   const [user, setUser] = useState<User | null>(null)
   const [showUserMenu, setShowUserMenu] = useState(false)
   const router = useRouter()
+  const pathname = usePathname()
 
   useEffect(() => {
     const getUser = async () => {
-      const { data: { user: authUser } } = await supabase.auth.getUser()
-      
-      if (authUser) {
-        const { data: userProfile } = await supabase
-          .from('users')
-          .select('*')
-          .eq('id', authUser.id)
-          .single()
+      try {
+        const response = await fetch('/api/auth/user')
+        const data = await response.json()
         
-        if (userProfile) {
-          setUser(userProfile)
+        if (data.user) {
+          setUser(data.user)
         }
+      } catch (error) {
+        console.error('Error fetching user:', error)
       }
     }
 
@@ -39,8 +36,27 @@ export default function Header() {
   }, [])
 
   const handleLogout = async () => {
-    await supabase.auth.signOut()
-    router.push('/login')
+    try {
+      const response = await fetch('/api/auth/logout', {
+        method: 'POST'
+      })
+      
+      if (response.ok) {
+        window.location.href = '/login'
+      } else {
+        alert('Không thể đăng xuất')
+      }
+    } catch (error) {
+      console.error('Logout error:', error)
+      alert('Có lỗi xảy ra khi đăng xuất')
+    }
+  }
+
+  const getPageTitle = () => {
+    if (pathname === '/dashboard') return 'Trang chủ'
+    if (pathname === '/digital') return 'Digital CRM'
+    if (pathname === '/settings') return 'Cài đặt'
+    return 'HMSG'
   }
 
   return (
@@ -49,7 +65,7 @@ export default function Header() {
         <div className="flex h-16 justify-between items-center">
           <div className="flex items-center">
             <h1 className="text-xl font-semibold text-gray-900">
-              Digital CRM
+              {getPageTitle()}
             </h1>
           </div>
 

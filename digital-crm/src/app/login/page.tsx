@@ -48,10 +48,10 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-white flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-          Digital CRM
+          HMSG
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
           Đăng nhập vào hệ thống quản lý
@@ -59,26 +59,25 @@ export default function LoginPage() {
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+        <div className="bg-white py-8 px-4">
           <form className="space-y-6" onSubmit={handleLogin}>
             {error && (
-              <div className="rounded-md bg-red-50 p-4">
+              <div className="rounded-lg bg-red-50 p-4">
                 <p className="text-sm text-red-800">{error}</p>
               </div>
             )}
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
                 Email
               </label>
-              <div className="mt-1">
+              <div>
                 <input
                   id="email"
                   name="email"
                   type="email"
                   required
-                  className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
-                  placeholder="admin@hmsg.fun"
+                  className="block w-full appearance-none rounded-lg bg-gray-50 px-4 py-3 text-sm placeholder-gray-400 hover:bg-gray-100 focus:bg-gray-50 focus:outline-none transition-colors"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -86,39 +85,32 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
                 Mật khẩu
               </label>
-              <div className="mt-1">
+              <div>
                 <input
                   id="password"
                   name="password"
                   type="password"
                   required
-                  className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
-                  placeholder="admin123456"
+                  className="block w-full appearance-none rounded-lg bg-gray-50 px-4 py-3 text-sm placeholder-gray-400 hover:bg-gray-100 focus:bg-gray-50 focus:outline-none transition-colors"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
             </div>
 
-            <div>
+            <div className="pt-2">
               <button
                 type="submit"
                 disabled={isLoading}
-                className="flex w-full justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="mx-auto block px-8 py-2 text-sm font-medium rounded-full bg-white text-black hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 {isLoading ? 'Đang đăng nhập...' : 'Đăng nhập'}
               </button>
             </div>
           </form>
-
-          <div className="mt-6 text-center">
-            <p className="text-xs text-gray-500">
-              Chỉ thành viên team Digital (team b) mới có thể truy cập
-            </p>
-          </div>
         </div>
       </div>
     </div>
