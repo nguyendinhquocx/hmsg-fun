@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation'
-import { createServerSupabaseClient } from '@/lib/supabase'
+import { createServerSupabaseClient } from '@/lib/supabase-server'
 import Header from '@/components/layout/header'
 import EmailConfigManager from '@/components/settings/email-config-manager'
 import SyncLogsViewer from '@/components/settings/sync-logs-viewer'
