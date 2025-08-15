@@ -20,7 +20,6 @@ INSERT INTO auth.users (
   role,
   aud,
   confirmation_token,
-  email_confirmed_at,
   phone_confirmed_at
 )
 SELECT 
@@ -37,7 +36,6 @@ SELECT
   'authenticated',
   'authenticated',
   '',
-  NOW(),
   NULL
 FROM public.users u
 WHERE u.email LIKE '%@hoanmy.com';
