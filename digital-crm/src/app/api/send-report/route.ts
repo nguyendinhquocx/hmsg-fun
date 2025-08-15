@@ -24,9 +24,11 @@ interface Company {
   sector?: string;
   contact_person: string;
   contact_email?: string;
+  contact_phone?: string;
   phone: string;
   email: string;
   status: string;
+  notes?: string;
   created_at: string;
 }
 
