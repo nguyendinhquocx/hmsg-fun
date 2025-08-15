@@ -1,111 +1,103 @@
-7:03:39 PM: Netlify Build                                                 
-7:03:39 PM: ────────────────────────────────────────────────────────────────
-7:03:39 PM: ​
-7:03:39 PM: ❯ Version
-7:03:39 PM:   @netlify/build 35.0.7
-7:03:39 PM: ​
-7:03:39 PM: ❯ Flags
-7:03:39 PM:   accountId: 6815f6e801302cc05c8831c8
-7:03:39 PM:   baseRelDir: true
-7:03:39 PM:   buildId: 689f22069e534500080bab37
-7:03:39 PM:   deployId: 689f22069e534500080bab39
-7:03:39 PM: ​
-7:03:39 PM: ❯ Current directory
-7:03:39 PM:   /opt/build/repo/digital-crm
-7:03:39 PM: ​
-7:03:39 PM: ❯ Config file
-7:03:39 PM:   /opt/build/repo/digital-crm/netlify.toml
-7:03:39 PM: ​
-7:03:39 PM: ❯ Context
-7:03:39 PM:   production
-7:03:40 PM: ​
-7:03:40 PM: ❯ Using Next.js Runtime - v5.12.0
-7:03:41 PM: Next.js cache restored
-7:03:41 PM: ​
-7:03:41 PM: build.command from netlify.toml                               
-7:03:41 PM: ────────────────────────────────────────────────────────────────
-7:03:41 PM: ​
-7:03:41 PM: $ npm run build
-7:03:41 PM: > digital-crm@0.1.0 build
-7:03:41 PM: > next build
-7:03:42 PM:    ▲ Next.js 15.4.6
-7:03:42 PM:    Creating an optimized production build ...
-7:03:44 PM:  ⚠ Compiled with warnings in 1000ms
-7:03:44 PM: ./node_modules/@supabase/realtime-js/dist/module/lib/websocket-factory.js
-7:03:44 PM: Critical dependency: the request of a dependency is an expression
-7:03:44 PM: Import trace for requested module:
-7:03:44 PM: ./node_modules/@supabase/realtime-js/dist/module/lib/websocket-factory.js
-7:03:44 PM: ./node_modules/@supabase/realtime-js/dist/module/index.js
-7:03:44 PM: ./node_modules/@supabase/supabase-js/dist/module/index.js
-7:03:44 PM: ./node_modules/@supabase/ssr/dist/index.mjs
-7:03:44 PM: ./src/lib/supabase-server.ts
-7:03:44 PM: ./src/app/api/auth/logout/route.ts
-7:03:47 PM:  ✓ Compiled successfully in 2000ms
-7:03:47 PM:    Linting and checking validity of types ...
-7:03:50 PM: ./src/app/api/auth/logout/route.ts
-7:03:50 PM: 4:28  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
-7:03:50 PM: ./src/app/api/auth/user/route.ts
-7:03:50 PM: 4:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
-7:03:50 PM: ./src/app/dashboard/page.tsx
-7:03:50 PM: 5:10  Warning: 'Building2' is defined but never used.  @typescript-eslint/no-unused-vars
-7:03:50 PM: 5:21  Warning: 'Users' is defined but never used.  @typescript-eslint/no-unused-vars
-7:03:50 PM: 5:28  Warning: 'Settings' is defined but never used.  @typescript-eslint/no-unused-vars
-7:03:50 PM: 5:38  Warning: 'ArrowRight' is defined but never used.  @typescript-eslint/no-unused-vars
-7:03:50 PM: 5:50  Warning: 'Lock' is defined but never used.  @typescript-eslint/no-unused-vars
-7:03:50 PM: ./src/app/login/debug-page.tsx
-7:03:50 PM: 15:9  Warning: 'router' is assigned a value but never used.  @typescript-eslint/no-unused-vars
-7:03:50 PM: ./src/components/dashboard/company-table.tsx
-7:03:50 PM: 49:6  Warning: React Hook useEffect has a missing dependency: 'filterCompanies'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
-7:03:50 PM: ./src/lib/supabase-server.ts
-7:03:50 PM: 19:20  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-7:03:50 PM: 28:20  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
-7:03:50 PM: info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
-7:03:51 PM: Failed during stage 'building site': Build script returned non-zero exit code: 2 (https://ntl.fyi/exit-code-2)
-7:03:51 PM: Failed to compile.
-7:03:51 PM: 
-7:03:51 PM: ./src/app/api/auth/login/route.ts:112:47
-7:03:51 PM: Type error: 'error' is of type 'unknown'.
-7:03:51 PM:   110 |     console.error('Login API error:', error)
-7:03:51 PM:   111 |     return NextResponse.json(
-7:03:51 PM: > 112 |       { error: 'Đã xảy ra lỗi server', debug: error.message },
-7:03:51 PM:       |                                               ^
-7:03:51 PM:   113 |       { status: 500 }
-7:03:51 PM:   114 |     )
-7:03:51 PM:   115 |   }
-7:03:51 PM: Next.js build worker exited with code: 1 and signal: null
-7:03:51 PM: ​
-7:03:51 PM: "build.command" failed                                        
-7:03:51 PM: ────────────────────────────────────────────────────────────────
-7:03:51 PM: ​
-7:03:51 PM:   Error message
-7:03:51 PM:   Command failed with exit code 1: npm run build (https://ntl.fyi/exit-code-1)
-7:03:51 PM: ​
-7:03:51 PM:   Error location
-7:03:51 PM:   In build.command from netlify.toml:
-7:03:51 PM:   npm run build
-7:03:51 PM: ​
-7:03:51 PM:   Resolved config
-7:03:51 PM:   build:
-7:03:51 PM:     base: /opt/build/repo/digital-crm
-7:03:51 PM:     command: npm run build
-7:03:51 PM:     commandOrigin: config
-7:03:51 PM:     environment:
-7:03:51 PM:       - NEXT_PUBLIC_SUPABASE_ANON_KEY
-7:03:51 PM:       - NEXT_PUBLIC_SUPABASE_URL
-7:03:51 PM:       - NODE_ENV
-7:03:51 PM:       - NODE_VERSION
-7:03:51 PM:       - NEXT_TELEMETRY_DISABLED
-7:03:51 PM:     publish: /opt/build/repo/digital-crm/.next
-7:03:51 PM:     publishOrigin: config
-7:03:51 PM:   plugins:
-7:03:51 PM:     - inputs: {}
-7:03:51 PM:       origin: config
-7:03:51 PM:       package: "@netlify/plugin-nextjs"
-7:03:51 PM:   redirects:
-7:03:51 PM:     - from: /*
+7:11:06 PM: Netlify Build                                                 
+7:11:06 PM: ────────────────────────────────────────────────────────────────
+7:11:06 PM: ​
+7:11:06 PM: ❯ Version
+7:11:06 PM:   @netlify/build 35.0.7
+7:11:06 PM: ​
+7:11:06 PM: ❯ Flags
+7:11:06 PM:   accountId: 6815f6e801302cc05c8831c8
+7:11:06 PM:   baseRelDir: true
+7:11:06 PM:   buildId: 689f23c626be910008a9f25c
+7:11:06 PM:   deployId: 689f23c626be910008a9f25e
+7:11:06 PM: ​
+7:11:06 PM: ❯ Current directory
+7:11:06 PM:   /opt/build/repo/digital-crm
+7:11:06 PM: ​
+7:11:06 PM: ❯ Config file
+7:11:06 PM:   /opt/build/repo/digital-crm/netlify.toml
+7:11:06 PM: ​
+7:11:06 PM: ❯ Context
+7:11:06 PM:   production
+7:11:06 PM: ​
+7:11:06 PM: ❯ Using Next.js Runtime - v5.12.0
+7:11:07 PM: Next.js cache restored
+7:11:07 PM: ​
+7:11:07 PM: build.command from netlify.toml                               
+7:11:07 PM: ────────────────────────────────────────────────────────────────
+7:11:07 PM: ​
+7:11:07 PM: $ npm run build
+7:11:07 PM: > digital-crm@0.1.0 build
+7:11:07 PM: > next build
+7:11:08 PM:    ▲ Next.js 15.4.6
+7:11:08 PM:    Creating an optimized production build ...
+7:11:10 PM:  ⚠ Compiled with warnings in 1000ms
+7:11:10 PM: ./node_modules/@supabase/realtime-js/dist/module/lib/websocket-factory.js
+7:11:10 PM: Critical dependency: the request of a dependency is an expression
+7:11:10 PM: Import trace for requested module:
+7:11:10 PM: ./node_modules/@supabase/realtime-js/dist/module/lib/websocket-factory.js
+7:11:10 PM: ./node_modules/@supabase/realtime-js/dist/module/index.js
+7:11:10 PM: ./node_modules/@supabase/supabase-js/dist/module/index.js
+7:11:10 PM: ./node_modules/@supabase/ssr/dist/index.mjs
+7:11:10 PM: ./src/lib/supabase-server.ts
+7:11:10 PM: ./src/app/api/auth/logout/route.ts
+7:11:14 PM:  ✓ Compiled successfully in 2000ms
+7:11:14 PM:    Linting and checking validity of types ...
+7:11:16 PM: Failed during stage 'building site': Build script returned non-zero exit code: 2 (https://ntl.fyi/exit-code-2)
+7:11:16 PM: 
+7:11:16 PM: Failed to compile.
+7:11:16 PM: ./src/app/api/auth/login/route.ts
+7:11:16 PM: 88:37  Error: 'profileError' is never reassigned. Use 'const' instead.  prefer-const
+7:11:16 PM: ./src/app/api/auth/logout/route.ts
+7:11:16 PM: 4:28  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+7:11:16 PM: ./src/app/api/auth/user/route.ts
+7:11:16 PM: 4:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+7:11:16 PM: ./src/app/dashboard/page.tsx
+7:11:16 PM: 5:10  Warning: 'Building2' is defined but never used.  @typescript-eslint/no-unused-vars
+7:11:16 PM: 5:21  Warning: 'Users' is defined but never used.  @typescript-eslint/no-unused-vars
+7:11:16 PM: 5:28  Warning: 'Settings' is defined but never used.  @typescript-eslint/no-unused-vars
+7:11:16 PM: 5:38  Warning: 'ArrowRight' is defined but never used.  @typescript-eslint/no-unused-vars
+7:11:16 PM: 5:50  Warning: 'Lock' is defined but never used.  @typescript-eslint/no-unused-vars
+7:11:16 PM: ./src/app/login/debug-page.tsx
+7:11:16 PM: 15:9  Warning: 'router' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+7:11:16 PM: ./src/components/dashboard/company-table.tsx
+7:11:16 PM: 49:6  Warning: React Hook useEffect has a missing dependency: 'filterCompanies'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+7:11:16 PM: ./src/lib/supabase-server.ts
+7:11:16 PM: 19:20  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
+7:11:16 PM: 28:20  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
+7:11:16 PM: info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+7:11:16 PM: ​
+7:11:16 PM: "build.command" failed                                        
+7:11:16 PM: ────────────────────────────────────────────────────────────────
+7:11:16 PM: ​
+7:11:16 PM:   Error message
+7:11:16 PM:   Command failed with exit code 1: npm run build (https://ntl.fyi/exit-code-1)
+7:11:16 PM: ​
+7:11:16 PM:   Error location
+7:11:16 PM:   In build.command from netlify.toml:
+7:11:16 PM:   npm run build
+7:11:16 PM: ​
+7:11:16 PM:   Resolved config
+7:11:16 PM:   build:
+7:11:16 PM:     base: /opt/build/repo/digital-crm
+7:11:16 PM:     command: npm run build
+7:11:16 PM:     commandOrigin: config
+7:11:16 PM:     environment:
+7:11:16 PM:       - NEXT_PUBLIC_SUPABASE_ANON_KEY
+7:11:16 PM:       - NEXT_PUBLIC_SUPABASE_URL
+7:11:16 PM:       - NODE_ENV
+7:11:16 PM:       - NODE_VERSION
+7:11:16 PM:       - NEXT_TELEMETRY_DISABLED
+7:11:16 PM:     publish: /opt/build/repo/digital-crm/.next
+7:11:16 PM:     publishOrigin: config
+7:11:16 PM:   plugins:
+7:11:16 PM:     - inputs: {}
+7:11:16 PM:       origin: config
+7:11:16 PM:       package: "@netlify/plugin-nextjs"
+7:11:16 PM:   redirects:
+7:11:16 PM:     - from: /*
       status: 200
       to: /index.html
   redirectsOrigin: config
-7:03:51 PM: Build failed due to a user error: Build script returned non-zero exit code: 2
-7:03:51 PM: Failing build: Failed to build site
-7:03:52 PM: Finished processing build request in 31.348s
+7:11:16 PM: Build failed due to a user error: Build script returned non-zero exit code: 2
+7:11:16 PM: Failing build: Failed to build site
+7:11:17 PM: Finished processing build request in 28.365s

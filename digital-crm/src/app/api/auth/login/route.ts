@@ -85,11 +85,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Check user profile
-    let { data: userProfile, error: profileError } = await supabase
+    const { data: initialUserProfile, error: profileError } = await supabase
       .from('users')
       .select('team, role, full_name')
       .eq('id', authData.user.id)
       .single()
+    
+    let userProfile = initialUserProfile
 
     // If profile not found by auth ID, try to find by email and sync
     if (profileError || !userProfile) {
