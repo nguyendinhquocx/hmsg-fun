@@ -62,8 +62,9 @@ export async function POST(request: NextRequest) {
             )
           }
         } else {
+          console.error('Auto-signup failed:', { signupError, signupData })
           return NextResponse.json(
-            { error: 'Email hoặc mật khẩu không đúng' },
+            { error: 'Email hoặc mật khẩu không đúng', debug: 'Auto-signup failed' },
             { status: 401 }
           )
         }
@@ -108,7 +109,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Login API error:', error)
     return NextResponse.json(
-      { error: 'Đã xảy ra lỗi server' },
+      { error: 'Đã xảy ra lỗi server', debug: error.message },
       { status: 500 }
     )
   }
