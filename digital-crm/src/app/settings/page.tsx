@@ -6,7 +6,7 @@ import SyncLogsViewer from '@/components/settings/sync-logs-viewer'
 import TestReportSender from '@/components/settings/test-report-sender'
 
 export default async function SettingsPage() {
-  const supabase = createServerSupabaseClient()
+  const supabase = await createServerSupabaseClient()
 
   // Check authentication and admin role
   const { data: { user } } = await supabase.auth.getUser()
