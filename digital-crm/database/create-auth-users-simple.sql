@@ -1,10 +1,11 @@
--- Tạo auth users từ database users table
+-- Tạo auth users đơn giản (không cần identities)
 -- Password mặc định: 123456789 cho tất cả
 
 -- Step 1: Xóa auth users hiện tại (nếu có)
 DELETE FROM auth.users WHERE email LIKE '%@hoanmy.com';
 
 -- Step 2: Tạo auth users từ database với cùng ID
+-- Cách đơn giản - chỉ cần auth.users là đủ
 INSERT INTO auth.users (
   id,
   instance_id,
@@ -16,51 +17,32 @@ INSERT INTO auth.users (
   raw_app_meta_data,
   raw_user_meta_data,
   is_super_admin,
-  role
+  role,
+  aud,
+  confirmation_token,
+  email_confirmed_at,
+  phone_confirmed_at
 )
 SELECT 
   u.id,
   '00000000-0000-0000-0000-000000000000'::uuid,
   u.email,
   crypt('123456789', gen_salt('bf')), -- Password: 123456789
-  NOW(),
+  NOW(), -- Email confirmed
   u.created_at,
   u.updated_at,
   '{"provider": "email", "providers": ["email"]}',
   jsonb_build_object('full_name', u.full_name, 'team', u.team),
   false,
-  'authenticated'
-FROM public.users u
-WHERE u.email LIKE '%@hoanmy.com';
-
--- Step 3: Tạo auth.identities cho email provider
-INSERT INTO auth.identities (
-  provider_id,
-  user_id,
-  identity_data,
-  provider,
-  last_sign_in_at,
-  created_at,
-  updated_at,
-  email
-)
-SELECT 
-  u.id::text,
-  u.id,
-  jsonb_build_object(
-    'sub', u.id::text,
-    'email', u.email,
-    'email_verified', true
-  ),
-  'email',
+  'authenticated',
+  'authenticated',
+  '',
   NOW(),
-  u.created_at,
-  u.updated_at,
-  u.email
+  NULL
 FROM public.users u
 WHERE u.email LIKE '%@hoanmy.com';
 
--- Step 4: Verify tất cả đã sync
+-- Step 3: Verify sync
 SELECT 
   'Auth users created:' as info,
   au.email,
