@@ -30,11 +30,11 @@ Password: 123456789 (mật khẩu mặc định)
 
 ## 🔐 Phân quyền
 
-### Team A:
+### Team A (Package, Referral, PHI):
 - Chỉ vào được Dashboard chính
 - KHÔNG vào được Digital CRM
 
-### Team B: 
+### Team B (CHC Only): 
 - Vào được Dashboard + Digital CRM
 - Quản lý danh sách công ty
 
@@ -48,13 +48,30 @@ Password: 123456789 (mật khẩu mặc định)
 
 **Lưu ý:** Nhân viên có thể đổi password sau khi login thành công.
 
-## ✅ Test Accounts hiện có
+## ✅ Accounts thực tế - HMSG
 
+**Admin (Full quyền):**
 ```
-admin@hmsg.fun - password: 123456789 (Admin, Team B)
-user1@hmsg.fun - password: 123456789 (User, Team B)  
-user2@hmsg.fun - password: 123456789 (User, Team A)
+quoc.nguyen3@hoanmy.com - Nguyễn Đình Quốc (Admin, Team B)
+luan.tran@hoanmy.com - Trần Hoàng Luân (Manager, Team B)
 ```
+
+**Team CHC (Digital CRM):**
+```  
+khanh.tran@hoanmy.com - Trần Thị Khanh
+hong.le@hoanmy.com - Lê Thị Thúy Hồng
+quynh.bui@hoanmy.com - Bùi Thị Như Quỳnh
+thuy.pham@hoanmy.com - Phạm Thị Thanh Thùy
+```
+
+**Team khác (Dashboard only):**
+```
+Package: anh.ngo, truc.nguyen3
+Referral: trang.nguyen9, tram.mai, vuong.duong, phong.trinh  
+PHI: phi.tran
+```
+
+**Tất cả password:** `123456789`
 
 ## 🚀 Workflow thêm nhân viên
 
