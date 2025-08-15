@@ -4,8 +4,20 @@ import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = 'https://glppizdubinvwuncteah.supabase.co'
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdscHBpemR1Ymludnd1bmN0ZWFoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI4NTM2MjYsImV4cCI6MjA2ODQyOTYyNn0.DEvmpyv3ABM1NQH7ag_0s_uNxdM7X1rwP9FnB4AzEMU'
 
-// Debug log
-console.log('Supabase config:', { url: supabaseUrl, keyLength: supabaseAnonKey?.length })
+// Detailed debug
+console.log('=== SUPABASE DEBUG ===')
+console.log('URL:', supabaseUrl)
+console.log('URL type:', typeof supabaseUrl)
+console.log('URL valid:', !!supabaseUrl && supabaseUrl.length > 0)
+console.log('Key:', supabaseAnonKey?.substring(0, 20) + '...')
+console.log('Key type:', typeof supabaseAnonKey) 
+console.log('Key valid:', !!supabaseAnonKey && supabaseAnonKey.length > 0)
+
+// Validation check
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.error('❌ MISSING CREDENTIALS!', { url: !!supabaseUrl, key: !!supabaseAnonKey })
+  throw new Error('Supabase credentials missing!')
+}
 
 // Client-side Supabase client
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
