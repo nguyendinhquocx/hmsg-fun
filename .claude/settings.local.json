@@ -1,12 +1,31 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npx create-next-app:*)",
-      "Bash(npm install:*)",
-      "Bash(npm run dev:*)",
-      "Bash(rm:*)"
+      "Bash(dir)",
+      "Bash(cp:*)",
+      "Bash(mkdir:*)",
+      "Bash(npm install)",
+      "Bash(npm link:*)",
+      "Bash(bmad-vn create:*)",
+      "Bash(bmad-vn init:*)",
+      "Bash(npm publish:*)",
+      "Bash(npm:*)",
+      "Bash(npx ndq-bmad-vn create:*)",
+      "Bash(npx:*)",
+      "Bash(dir:*)",
+      "Bash(claude --version)",
+      "Bash(claude config list)",
+      "Bash(claude doctor)",
+      "Bash(claude mcp:*)",
+      "Bash(claude --debug --print \"test\")"
     ],
     "deny": [],
-    "ask": []
+    "ask": [],
+    "defaultMode": "acceptEdits",
+    "additionalDirectories": [
+      "D:\\pcloud\\code\\ai\\BMAD\\BMAD-METHOD-4",
+      "D:\\pcloud\\code\\ai\\BMAD\\test-bmad-project",
+      "D:\\pcloud\\code\\ai\\BMAD"
+    ]
   }
 }
