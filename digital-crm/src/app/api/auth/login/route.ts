@@ -15,10 +15,11 @@ export async function POST(request: NextRequest) {
     const supabase = await createServerSupabaseClient()
 
     // First, try normal authentication
-    let { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+    const { data: initialAuthData, error: authError } = await supabase.auth.signInWithPassword({
       email,
       password,
     })
+    let authData = initialAuthData
 
     // If auth fails, check if user exists in database and try auto-signup
     if (authError || !authData.user) {
