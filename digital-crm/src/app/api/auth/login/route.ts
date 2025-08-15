@@ -14,17 +14,52 @@ export async function POST(request: NextRequest) {
 
     const supabase = await createServerSupabaseClient()
 
-    // Authenticate user
-    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+    // First, try normal authentication
+    let { data: authData, error: authError } = await supabase.auth.signInWithPassword({
       email,
       password,
     })
 
+    // If auth fails, check if user exists in database and try auto-signup
     if (authError || !authData.user) {
-      return NextResponse.json(
-        { error: 'Email hoặc mật khẩu không đúng' },
-        { status: 401 }
-      )
+      // Check if user exists in database
+      const { data: dbUser, error: dbError } = await supabase
+        .from('users')
+        .select('email, full_name')
+        .eq('email', email)
+        .single()
+
+      if (!dbError && dbUser) {
+        // User exists in database but not in auth - try auto-signup
+        const { data: signupData, error: signupError } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            emailRedirectTo: undefined // Skip email confirmation
+          }
+        })
+
+        if (!signupError && signupData.user) {
+          // Update the database record with the new auth user ID
+          await supabase
+            .from('users')
+            .update({ id: signupData.user.id })
+            .eq('email', email)
+
+          // Set authData for continued flow
+          authData = signupData
+        } else {
+          return NextResponse.json(
+            { error: 'Email hoặc mật khẩu không đúng' },
+            { status: 401 }
+          )
+        }
+      } else {
+        return NextResponse.json(
+          { error: 'Email hoặc mật khẩu không đúng' },
+          { status: 401 }
+        )
+      }
     }
 
     // Check user profile
