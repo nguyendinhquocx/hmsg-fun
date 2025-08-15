@@ -62,9 +62,17 @@ export async function POST(request: NextRequest) {
             )
           }
         } else {
-          console.error('Auto-signup failed:', { signupError, signupData })
+          console.error('Auto-signup failed:', { 
+            signupError: signupError?.message || signupError, 
+            signupData,
+            email 
+          })
           return NextResponse.json(
-            { error: 'Email hoặc mật khẩu không đúng', debug: 'Auto-signup failed' },
+            { 
+              error: 'Email hoặc mật khẩu không đúng', 
+              debug: 'Auto-signup failed',
+              signupError: signupError?.message || String(signupError)
+            },
             { status: 401 }
           )
         }
