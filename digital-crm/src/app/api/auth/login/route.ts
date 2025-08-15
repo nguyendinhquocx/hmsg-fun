@@ -85,18 +85,36 @@ export async function POST(request: NextRequest) {
     }
 
     // Check user profile
-    const { data: userProfile, error: profileError } = await supabase
+    let { data: userProfile, error: profileError } = await supabase
       .from('users')
       .select('team, role, full_name')
       .eq('id', authData.user.id)
       .single()
 
+    // If profile not found by auth ID, try to find by email and sync
     if (profileError || !userProfile) {
-      await supabase.auth.signOut()
-      return NextResponse.json(
-        { error: 'Không tìm thấy thông tin người dùng' },
-        { status: 404 }
-      )
+      const { data: userByEmail } = await supabase
+        .from('users')
+        .select('team, role, full_name')
+        .eq('email', authData.user.email)
+        .single()
+
+      if (userByEmail) {
+        // Sync database ID with auth ID
+        await supabase
+          .from('users')
+          .update({ id: authData.user.id })
+          .eq('email', authData.user.email)
+        
+        userProfile = userByEmail
+        console.log('Synced user ID:', { email: authData.user.email, newId: authData.user.id })
+      } else {
+        await supabase.auth.signOut()
+        return NextResponse.json(
+          { error: 'Không tìm thấy thông tin người dùng' },
+          { status: 404 }
+        )
+      }
     }
 
     // All users can login to main dashboard
