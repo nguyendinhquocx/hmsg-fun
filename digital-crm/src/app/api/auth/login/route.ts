@@ -109,7 +109,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Login API error:', error)
     return NextResponse.json(
-      { error: 'Đã xảy ra lỗi server', debug: error.message },
+      { error: 'Đã xảy ra lỗi server', debug: error instanceof Error ? error.message : String(error) },
       { status: 500 }
     )
   }
