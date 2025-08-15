@@ -201,7 +201,7 @@ export async function POST(request: NextRequest) {
     const recipients = emailConfigs.map(config => config.email)
     
     const mailOptions = {
-      from: process.env.FROM_EMAIL || 'Digital CRM <noreply@hmsg.fun>',
+      from: process.env.FROM_EMAIL || 'Digital CRM <quocnguyent10v@gmail.com>',
       to: recipients.join(', '),
       subject: subject,
       html: htmlContent,

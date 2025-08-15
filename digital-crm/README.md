@@ -80,7 +80,7 @@ SMTP_HOST=smtp.sendgrid.net
 SMTP_PORT=587
 SMTP_USER=apikey
 SMTP_PASS=your_sendgrid_api_key
-FROM_EMAIL=noreply@hmsg.fun
+FROM_EMAIL=quocnguyent10v@gmail.com
 ```
 
 ### 4. Khởi tạo database
