@@ -20,7 +20,10 @@ const createTransporter = () => {
 interface Company {
   id: string;
   name: string;
+  code?: string;
+  sector?: string;
   contact_person: string;
+  contact_email?: string;
   phone: string;
   email: string;
   status: string;
