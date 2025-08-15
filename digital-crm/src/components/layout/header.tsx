@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
-import { LogOut, Settings, User } from 'lucide-react'
+import { LogOut, Settings, User, Key } from 'lucide-react'
+import ChangePasswordModal from '@/components/auth/change-password-modal'
 
 interface User {
   id: string
@@ -15,6 +16,7 @@ interface User {
 export default function Header() {
   const [user, setUser] = useState<User | null>(null)
   const [showUserMenu, setShowUserMenu] = useState(false)
+  const [showChangePassword, setShowChangePassword] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
 
@@ -103,6 +105,17 @@ export default function Header() {
                     )}
                     
                     <button
+                      onClick={() => {
+                        setShowChangePassword(true)
+                        setShowUserMenu(false)
+                      }}
+                      className="flex w-full items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      <Key className="h-4 w-4 mr-3" />
+                      Đổi mật khẩu
+                    </button>
+                    
+                    <button
                       onClick={handleLogout}
                       className="flex w-full items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
@@ -116,6 +129,11 @@ export default function Header() {
           </div>
         </div>
       </div>
+      
+      <ChangePasswordModal
+        isOpen={showChangePassword}
+        onClose={() => setShowChangePassword(false)}
+      />
     </header>
   )
 }
