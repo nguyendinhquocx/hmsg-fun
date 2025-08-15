@@ -36,7 +36,7 @@ export default function DashboardPage() {
   }, [])
 
   const handleDigitalAccess = () => {
-    if (user?.team === 'b') {
+    if (user?.team === 'CHC' || user?.role === 'admin') {
       window.location.href = '/digital'
     }
   }
@@ -103,7 +103,7 @@ export default function DashboardPage() {
                 Quản lý công ty, theo dõi thống kê, đồng bộ Google Sheets và báo cáo tự động.
               </p>
               
-              {user?.team === 'b' ? (
+              {user?.team === 'CHC' || user?.role === 'admin' ? (
                 <button
                   onClick={handleDigitalAccess}
                   className="w-full px-4 py-2 text-sm font-medium rounded border border-gray-300 bg-white text-black hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-black"
@@ -112,7 +112,7 @@ export default function DashboardPage() {
                 </button>
               ) : (
                 <div className="w-full px-4 py-2 text-sm font-medium rounded text-gray-500 bg-gray-100 text-center">
-                  Chỉ dành cho Team B
+                  Chỉ dành cho Team CHC
                 </div>
               )}
             </div>
@@ -167,7 +167,7 @@ export default function DashboardPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="text-center">
               <div className="text-2xl font-bold text-black">
-                {user?.team === 'b' ? 'Team Digital' : `Team ${user?.team?.toUpperCase()}`}
+                Team {user?.team?.toUpperCase()}
               </div>
               <div className="text-sm text-gray-500">Nhóm của bạn</div>
             </div>
@@ -179,7 +179,7 @@ export default function DashboardPage() {
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-black">
-                {user?.team === 'b' ? '1' : '0'}
+                {user?.team === 'CHC' || user?.role === 'admin' ? '1' : '0'}
               </div>
               <div className="text-sm text-gray-500">Module có thể truy cập</div>
             </div>

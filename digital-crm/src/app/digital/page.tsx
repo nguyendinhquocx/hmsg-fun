@@ -23,7 +23,7 @@ export default function DigitalPage() {
               Digital CRM
             </h1>
             <p className="mt-1 text-sm text-gray-500">
-              Quản lý cơ hội kinh doanh team Digital
+              Quản lý cơ hội kinh doanh team CHC
             </p>
           </div>
           <button

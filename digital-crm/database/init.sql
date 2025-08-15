@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS users (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   email VARCHAR(255) UNIQUE NOT NULL,
   full_name VARCHAR(255) NOT NULL,
-  team VARCHAR(50) NOT NULL DEFAULT 'a',
+  team VARCHAR(50) NOT NULL,
   role VARCHAR(20) NOT NULL DEFAULT 'user' CHECK (role IN ('admin', 'user')),
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS companies (
   contact_person VARCHAR(255),
   contact_email VARCHAR(255),
   contact_phone VARCHAR(20),
-  team VARCHAR(50) NOT NULL DEFAULT 'b',
+  team VARCHAR(50) NOT NULL DEFAULT 'CHC',
   status VARCHAR(20) NOT NULL DEFAULT 'potential' CHECK (status IN ('active', 'inactive', 'potential')),
   notes TEXT,
   created_by UUID REFERENCES users(id),
@@ -79,13 +79,13 @@ CREATE POLICY "Admins can manage users" ON users
     )
   );
 
--- Companies access based on team
-CREATE POLICY "Team b users can access companies" ON companies
+-- Companies access based on team (only CHC team + Admins)
+CREATE POLICY "CHC and Admin users can access companies" ON companies
   FOR ALL USING (
     EXISTS (
       SELECT 1 FROM users 
       WHERE id::text = auth.uid()::text 
-      AND team = 'b'
+      AND (team = 'CHC' OR role = 'admin')
     )
   );
 
@@ -109,11 +109,11 @@ CREATE POLICY "Admins can read sync logs" ON sync_logs
     )
   );
 
--- Insert sample data
+-- Insert sample data (real HMSG employees will be added via update script)
 INSERT INTO users (email, full_name, team, role) VALUES
-  ('admin@hmsg.fun', 'Administrator', 'b', 'admin'),
-  ('user1@hmsg.fun', 'Nhân viên Team B', 'b', 'user'),
-  ('user2@hmsg.fun', 'Nhân viên Team A', 'a', 'user')
+  ('quoc.nguyen3@hoanmy.com', 'Nguyễn Đình Quốc', 'Admin', 'admin'),
+  ('luan.tran@hoanmy.com', 'Trần Hoàng Luân', 'Manager', 'admin'),
+  ('khanh.tran@hoanmy.com', 'Trần Thị Khanh', 'CHC', 'user')
 ON CONFLICT (email) DO NOTHING;
 
 INSERT INTO email_configs (email, name, active) VALUES

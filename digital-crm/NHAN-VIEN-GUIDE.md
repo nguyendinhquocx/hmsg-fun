@@ -9,7 +9,7 @@
    ```
    email: nhanvien@congty.com
    full_name: Tên Nhân Viên
-   team: a hoặc b
+   team: CHC, Package, Referral, PHI, Admin, Manager
    role: user hoặc admin
    ```
 4. Click **Save**
@@ -30,13 +30,13 @@ Password: 123456789 (mật khẩu mặc định)
 
 ## 🔐 Phân quyền
 
-### Team A (Package, Referral, PHI):
-- Chỉ vào được Dashboard chính
-- KHÔNG vào được Digital CRM
-
-### Team B (CHC Only): 
+### Team CHC:
 - Vào được Dashboard + Digital CRM
 - Quản lý danh sách công ty
+
+### Team Package, Referral, PHI:
+- Chỉ vào được Dashboard chính
+- KHÔNG vào được Digital CRM
 
 ### Admin:
 - Full quyền Dashboard + Digital CRM + Settings
