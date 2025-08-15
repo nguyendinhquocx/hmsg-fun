@@ -17,7 +17,17 @@ const createTransporter = () => {
 }
 
 // Generate Excel file
-const generateExcelReport = async (companies: any[]) => {
+interface Company {
+  id: string;
+  name: string;
+  contact_person: string;
+  phone: string;
+  email: string;
+  status: string;
+  created_at: string;
+}
+
+const generateExcelReport = async (companies: Company[]) => {
   const workbook = new ExcelJS.Workbook()
   const worksheet = workbook.addWorksheet('Báo cáo Digital CRM')
 

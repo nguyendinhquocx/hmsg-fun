@@ -182,7 +182,7 @@ export default function SyncLogsViewer() {
           <select
             className="px-3 py-1 border border-gray-300 rounded-md text-sm focus:ring-blue-500 focus:border-blue-500"
             value={filter}
-            onChange={(e) => setFilter(e.target.value as any)}
+            onChange={(e) => setFilter(e.target.value as 'all' | 'success' | 'failed')}
           >
             <option value="all">Tất cả</option>
             <option value="success">Thành công</option>
@@ -278,9 +278,9 @@ export default function SyncLogsViewer() {
         <h4 className="font-medium mb-2">💡 Thông tin về đồng bộ Google Sheets:</h4>
         <ul className="space-y-1 text-xs">
           <li>• Mỗi khi thêm/sửa/xóa công ty, hệ thống sẽ tự động đồng bộ với Google Sheets</li>
-          <li>• Nếu có lỗi đồng bộ, bạn có thể nhấn "Thử lại" để đồng bộ lại</li>
+          <li>• Nếu có lỗi đồng bộ, bạn có thể nhấn &quot;Thử lại&quot; để đồng bộ lại</li>
           <li>• Log được cập nhật real-time và chỉ hiển thị 50 bản ghi gần nhất</li>
-          <li>• Trạng thái "Đang xử lý" có thể xuất hiện trong quá trình đồng bộ</li>
+          <li>• Trạng thái &quot;Đang xử lý&quot; có thể xuất hiện trong quá trình đồng bộ</li>
         </ul>
       </div>
     </div>

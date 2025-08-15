@@ -17,7 +17,8 @@
       "Bash(claude config list)",
       "Bash(claude doctor)",
       "Bash(claude mcp:*)",
-      "Bash(claude --debug --print \"test\")"
+      "Bash(claude --debug --print \"test\")",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": [],
