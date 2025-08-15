@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
             .eq('email', email)
 
           // Set authData for continued flow
-          authData = signupData
+          authData = { user: signupData.user, session: signupData.session }
         } else {
           return NextResponse.json(
             { error: 'Email hoặc mật khẩu không đúng' },
