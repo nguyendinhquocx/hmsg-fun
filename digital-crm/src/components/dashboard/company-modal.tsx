@@ -33,7 +33,7 @@ export default function CompanyModal({ isOpen, onClose, company, onSave }: Compa
     contact_person: '',
     contact_email: '',
     contact_phone: '',
-    status: 'potential' as const,
+    status: 'potential' as 'active' | 'inactive' | 'potential',
     notes: ''
   })
   const [isLoading, setIsLoading] = useState(false)
