@@ -47,8 +47,20 @@ export async function POST(request: NextRequest) {
             .update({ id: signupData.user.id })
             .eq('email', email)
 
-          // Set authData for continued flow
-          authData = { user: signupData.user, session: signupData.session }
+          // Sign in again to get a proper session
+          const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+          })
+
+          if (!signInError && signInData.user) {
+            authData = signInData
+          } else {
+            return NextResponse.json(
+              { error: 'Email hoặc mật khẩu không đúng' },
+              { status: 401 }
+            )
+          }
         } else {
           return NextResponse.json(
             { error: 'Email hoặc mật khẩu không đúng' },
