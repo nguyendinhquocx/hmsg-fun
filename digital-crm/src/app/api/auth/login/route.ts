@@ -24,13 +24,29 @@ export async function POST(request: NextRequest) {
     // If auth fails, check if user exists in database and try auto-signup
     if (authError || !authData.user) {
       // Check if user exists in database
+      console.log('Checking database for user:', email)
       const { data: dbUser, error: dbError } = await supabase
         .from('users')
         .select('email, full_name')
         .eq('email', email)
         .single()
 
-      if (!dbError && dbUser) {
+      console.log('Database query result:', { dbUser, dbError })
+
+      if (dbError) {
+        console.error('Database error finding user:', dbError)
+        return NextResponse.json(
+          { 
+            error: 'Email hoặc mật khẩu không đúng', 
+            debug: 'Auto-signup failed',
+            signupError: 'Database error finding user',
+            dbError: dbError.message || String(dbError)
+          },
+          { status: 401 }
+        )
+      }
+
+      if (dbUser) {
         // User exists in database but not in auth - try auto-signup
         const { data: signupData, error: signupError } = await supabase.auth.signUp({
           email,
