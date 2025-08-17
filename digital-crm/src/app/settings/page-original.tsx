@@ -27,7 +27,13 @@ export default async function SettingsPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <Header />
+      <Header user={{
+        id: user.id,
+        email: user.email || '',
+        full_name: userProfile?.team || '',
+        team: userProfile?.team || '',
+        role: userProfile?.role || ''
+      }} />
       
       <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
