@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from 'react'
 import { createClient } from '@supabase/supabase-js'
+import type { User } from '@supabase/supabase-js'
 
 export default function DebugPage() {
-  const [authUser, setAuthUser] = useState<any>(null)
+  const [authUser, setAuthUser] = useState<User | null>(null)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {

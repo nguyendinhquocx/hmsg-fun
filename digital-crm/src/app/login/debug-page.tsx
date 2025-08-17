@@ -12,7 +12,7 @@ export default function DebugLoginPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [debugInfo, setDebugInfo] = useState<Record<string, unknown>>({})
-  const router = useRouter()
+  const _router = useRouter()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()

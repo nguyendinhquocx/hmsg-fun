@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/lib/supabase'
 import { 
   Plus, 
@@ -40,32 +40,7 @@ export default function CompanyTable() {
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
 
-  useEffect(() => {
-    fetchCompanies()
-  }, [])
-
-  useEffect(() => {
-    filterCompanies()
-  }, [companies, searchTerm, statusFilter])
-
-  const fetchCompanies = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('companies')
-        .select('*')
-      .eq('team', 'CHC')
-      .order('created_at', { ascending: false })
-
-      if (error) throw error
-      setCompanies(data || [])
-    } catch (error) {
-      console.error('Error fetching companies:', error)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const filterCompanies = () => {
+  const filterCompanies = useCallback(() => {
     let filtered = companies
 
     if (searchTerm) {
@@ -83,6 +58,31 @@ export default function CompanyTable() {
 
     setFilteredCompanies(filtered)
     setCurrentPage(1)
+  }, [companies, searchTerm, statusFilter])
+
+  useEffect(() => {
+    fetchCompanies()
+  }, [])
+
+  useEffect(() => {
+    filterCompanies()
+  }, [companies, searchTerm, statusFilter, filterCompanies])
+
+  const fetchCompanies = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('companies')
+        .select('*')
+      .eq('team', 'CHC')
+      .order('created_at', { ascending: false })
+
+      if (error) throw error
+      setCompanies(data || [])
+    } catch (error) {
+      console.error('Error fetching companies:', error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleEdit = (company: Company) => {

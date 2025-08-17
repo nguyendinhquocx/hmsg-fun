@@ -1,7 +1,6 @@
 import { cookies } from 'next/headers'
 import { NextRequest } from 'next/server'
 import jwt from 'jsonwebtoken'
-import { createServerSupabaseClient } from '@/lib/supabase-server'
 
 // Secret key for JWT - should match the one in login API
 const JWT_SECRET = process.env.JWT_SECRET || 'your-default-secret-key-change-this'
