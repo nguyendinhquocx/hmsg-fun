@@ -98,7 +98,7 @@ export async function POST(request: NextRequest) {
 }
 
 // API để lấy danh sách users (chỉ admin)
-export async function GET(_request: NextRequest) {
+export async function GET() {
   try {
     // TODO: Thêm authentication check cho admin
     

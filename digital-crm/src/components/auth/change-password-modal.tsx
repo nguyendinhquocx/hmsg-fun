@@ -75,7 +75,7 @@ export default function ChangePasswordModal({ isOpen, onClose }: ChangePasswordM
       } else {
         setError(data.error || 'Đã xảy ra lỗi')
       }
-    } catch (_error) {
+    } catch {
       setError('Đã xảy ra lỗi kết nối')
     } finally {
       setIsLoading(false)

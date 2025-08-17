@@ -23,9 +23,9 @@ export default function DebugPage() {
         } else {
           setAuthUser(user)
         }
-      } catch (_err) {
-        setError('Error connecting to Supabase')
-      }
+      } catch {
+      setError('Error connecting to Supabase')
+    }
     }
 
     checkAuth()
