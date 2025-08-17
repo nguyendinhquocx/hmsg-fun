@@ -1,22 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createServerSupabaseClient } from '@/lib/supabase-server'
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createServerSupabaseClient()
+    // Create response with success message
+    const response = NextResponse.json({ success: true })
     
-    // Sign out user
-    const { error } = await supabase.auth.signOut()
+    // Clear the auth token cookie
+    response.cookies.set('authToken', '', { 
+      httpOnly: true,
+      expires: new Date(0), // Set expiry to past date to delete cookie
+      path: '/',
+      sameSite: 'strict'
+    })
     
-    if (error) {
-      console.error('Logout error:', error)
-      return NextResponse.json(
-        { error: 'Không thể đăng xuất' },
-        { status: 500 }
-      )
-    }
-
-    return NextResponse.json({ success: true })
+    return response
 
   } catch (error) {
     console.error('Logout API error:', error)

@@ -118,10 +118,10 @@ SMTP_PASS=your_smtp_password
 
 ### 4. Khởi tạo database
 
-Chạy script SQL trong `database/init.sql` trên Supabase để tạo:
-- Bảng users, companies, email_configs, sync_logs
-- Row Level Security policies
-- Sample data cho testing
+1. Tạo các bảng và dữ liệu mẫu bằng cách chạy script SQL trong `database/init.sql` trên Supabase (nếu có).
+2. Nếu file `database/init.sql` không tồn tại, hãy tạo schema cho bảng `users` với các cột: `id`, `email`, `full_name`, `team`, `role`.
+3. Chạy script `database/add-password-hash.sql` để thêm cột `password_hash` vào bảng `users` và đặt mật khẩu mặc định cho tất cả người dùng.
+4. (Tùy chọn) Chạy script `database/delete-auth-users.sql` để xóa tất cả người dùng khỏi Supabase Authentication nếu bạn muốn chỉ sử dụng xác thực qua bảng `users` trong database.
 
 ### 5. Chạy ứng dụng
 

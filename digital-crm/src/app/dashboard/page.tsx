@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Header from '@/components/layout/header'
-import { Building2, Users, Settings, ArrowRight, Lock } from 'lucide-react'
+import { createClient } from '@supabase/supabase-js'
 
 interface User {
   id: string
@@ -19,14 +19,44 @@ export default function DashboardPage() {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const response = await fetch('/api/auth/user')
-        const data = await response.json()
+        console.log('Dashboard: Getting user from client-side Supabase...')
+        console.log('Dashboard: Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
+        console.log('Dashboard: Supabase Key:', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.substring(0, 10) + '...')
         
-        if (data.user) {
-          setUser(data.user)
+        const supabase = createClient(
+          process.env.NEXT_PUBLIC_SUPABASE_URL!,
+          process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+        )
+        
+        const { data: { user }, error } = await supabase.auth.getUser()
+        
+        console.log('Dashboard: Supabase getUser result - error:', error?.message || null)
+        console.log('Dashboard: Supabase getUser result - user:', user ? 'Found user' : 'No user')
+        
+        if (error || !user) {
+          console.log('Dashboard: No authenticated user, redirecting to login...')
+          window.location.href = '/login'
+          return
         }
+
+        // Extract user metadata and format
+        const userMetadata = user.user_metadata || {}
+        const formattedUser = {
+          id: user.id,
+          email: user.email || '',
+          full_name: userMetadata.full_name || user.email?.split('@')[0] || '',
+          team: userMetadata.team || 'Admin',
+          role: userMetadata.role || 'user'
+        }
+
+        console.log('Dashboard: User authenticated, setting user state:', formattedUser)
+        setUser(formattedUser)
+        
       } catch (error) {
-        console.error('Error fetching user:', error)
+        console.error('Dashboard: Error getting user:', error)
+        console.log('Dashboard: Error occurred, redirecting to login...')
+        window.location.href = '/login'
+        return
       } finally {
         setIsLoading(false)
       }
@@ -36,15 +66,11 @@ export default function DashboardPage() {
   }, [])
 
   const handleDigitalAccess = () => {
-    if (user?.team === 'CHC' || user?.role === 'admin') {
-      window.location.href = '/digital'
-    }
+    window.location.href = '/digital'
   }
 
   const handleSettings = () => {
-    if (user?.role === 'admin') {
-      window.location.href = '/settings'
-    }
+    window.location.href = '/settings'
   }
 
   if (isLoading) {
@@ -103,18 +129,12 @@ export default function DashboardPage() {
                 Quản lý công ty, theo dõi thống kê, đồng bộ Google Sheets và báo cáo tự động.
               </p>
               
-              {user?.team === 'CHC' || user?.role === 'admin' ? (
-                <button
-                  onClick={handleDigitalAccess}
-                  className="w-full px-4 py-2 text-sm font-medium rounded border border-gray-300 bg-white text-black hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-black"
-                >
-                  Truy cập Digital CRM
-                </button>
-              ) : (
-                <div className="w-full px-4 py-2 text-sm font-medium rounded text-gray-500 bg-gray-100 text-center">
-                  Chỉ dành cho Team CHC
-                </div>
-              )}
+              <button
+                onClick={handleDigitalAccess}
+                className="w-full px-4 py-2 text-sm font-medium rounded border border-gray-300 bg-white text-black hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-black"
+              >
+                Truy cập Digital CRM
+              </button>
             </div>
           </div>
 
@@ -136,28 +156,26 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* Settings Module - Only for Admin */}
-          {user?.role === 'admin' && (
-            <div className="bg-white rounded border border-gray-200 hover:border-black transition-colors duration-200">
-              <div className="p-6">
-                <div className="mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900">Cài đặt hệ thống</h3>
-                  <p className="text-sm text-gray-500">Quản lý cấu hình</p>
-                </div>
-                
-                <p className="text-gray-600 mb-6">
-                  Quản lý email báo cáo, xem log đồng bộ, và cấu hình hệ thống.
-                </p>
-                
-                <button
-                  onClick={handleSettings}
-                  className="w-full px-4 py-2 border border-gray-300 text-sm font-medium rounded text-black bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-black"
-                >
-                  Mở cài đặt
-                </button>
+          {/* Settings Module */}
+          <div className="bg-white rounded border border-gray-200 hover:border-black transition-colors duration-200">
+            <div className="p-6">
+              <div className="mb-4">
+                <h3 className="text-lg font-semibold text-gray-900">Cài đặt hệ thống</h3>
+                <p className="text-sm text-gray-500">Quản lý cấu hình</p>
               </div>
+              
+              <p className="text-gray-600 mb-6">
+                Quản lý email báo cáo, xem log đồng bộ, và cấu hình hệ thống.
+              </p>
+              
+              <button
+                onClick={handleSettings}
+                className="w-full px-4 py-2 border border-gray-300 text-sm font-medium rounded text-black bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-black"
+              >
+                Mở cài đặt
+              </button>
             </div>
-          )}
+          </div>
 
         </div>
 
@@ -179,7 +197,7 @@ export default function DashboardPage() {
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-black">
-                {user?.team === 'CHC' || user?.role === 'admin' ? '1' : '0'}
+                2
               </div>
               <div className="text-sm text-gray-500">Module có thể truy cập</div>
             </div>

@@ -2,10 +2,28 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 
 export async function POST(request: NextRequest) {
+  console.log('=== LOGIN API CALLED (using Supabase Auth) ===')
   try {
-    const { email, password } = await request.json()
+    // Parse request body with error handling
+    let email, password
+    try {
+      const body = await request.json()
+      email = body.email
+      password = body.password
+      console.log('Parsed email:', email)
+      console.log('Parsed password:', password)
+    } catch (parseError) {
+      console.log('JSON parse error:', parseError)
+      return NextResponse.json(
+        { error: 'Invalid request format' },
+        { status: 400 }
+      )
+    }
+
+    console.log('=== Starting Supabase Auth login for email:', email)
 
     if (!email || !password) {
+      console.log('Missing email or password')
       return NextResponse.json(
         { error: 'Email và mật khẩu là bắt buộc' },
         { status: 400 }
@@ -14,140 +32,42 @@ export async function POST(request: NextRequest) {
 
     const supabase = await createServerSupabaseClient()
 
-    // First, try normal authentication
-    const { data: initialAuthData, error: authError } = await supabase.auth.signInWithPassword({
-      email,
-      password,
+    // Use Supabase Authentication
+    console.log('Attempting Supabase Auth login...')
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
     })
-    let authData = initialAuthData
 
-    // If auth fails, check if user exists in database and try auto-signup
-    if (authError || !authData.user) {
-      // Check if user exists in database
-      console.log('Checking database for user:', email)
-      const { data: dbUser, error: dbError } = await supabase
-        .from('users')
-        .select('email, full_name')
-        .eq('email', email)
-        .single()
+    console.log('Supabase auth result - error:', error?.message || null)
+    console.log('Supabase auth result - user:', data.user ? 'Found user' : 'No user')
+    console.log('Supabase auth result - session:', data.session ? 'Session created' : 'No session')
 
-      console.log('Database query result:', { dbUser, dbError })
-
-      if (dbError) {
-        console.error('Database error finding user:', dbError)
-        return NextResponse.json(
-          { 
-            error: 'Email hoặc mật khẩu không đúng', 
-            debug: 'Auto-signup failed',
-            signupError: 'Database error finding user',
-            dbError: dbError.message || String(dbError)
-          },
-          { status: 401 }
-        )
-      }
-
-      if (dbUser) {
-        // User exists in database but not in auth - try auto-signup
-        const { data: signupData, error: signupError } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            emailRedirectTo: undefined // Skip email confirmation
-          }
-        })
-
-        if (!signupError && signupData.user) {
-          // Update the database record with the new auth user ID
-          await supabase
-            .from('users')
-            .update({ id: signupData.user.id })
-            .eq('email', email)
-
-          // Sign in again to get a proper session
-          const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-          })
-
-          if (!signInError && signInData.user) {
-            authData = signInData
-          } else {
-            return NextResponse.json(
-              { error: 'Email hoặc mật khẩu không đúng' },
-              { status: 401 }
-            )
-          }
-        } else {
-          console.error('Auto-signup failed:', { 
-            signupError: signupError?.message || signupError, 
-            signupData,
-            email 
-          })
-          return NextResponse.json(
-            { 
-              error: 'Email hoặc mật khẩu không đúng', 
-              debug: 'Auto-signup failed',
-              signupError: signupError?.message || String(signupError)
-            },
-            { status: 401 }
-          )
-        }
-      } else {
-        return NextResponse.json(
-          { error: 'Email hoặc mật khẩu không đúng' },
-          { status: 401 }
-        )
-      }
+    if (error || !data.user) {
+      console.log('Authentication failed:', error?.message)
+      return NextResponse.json(
+        { error: 'Email hoặc mật khẩu không đúng' },
+        { status: 401 }
+      )
     }
 
-    // Check user profile
-    const { data: initialUserProfile, error: profileError } = await supabase
-      .from('users')
-      .select('team, role, full_name')
-      .eq('id', authData.user.id)
-      .single()
-    
-    let userProfile = initialUserProfile
-
-    // If profile not found by auth ID, try to find by email and sync
-    if (profileError || !userProfile) {
-      const { data: userByEmail } = await supabase
-        .from('users')
-        .select('team, role, full_name')
-        .eq('email', authData.user.email)
-        .single()
-
-      if (userByEmail) {
-        // Sync database ID with auth ID
-        await supabase
-          .from('users')
-          .update({ id: authData.user.id })
-          .eq('email', authData.user.email)
-        
-        userProfile = userByEmail
-        console.log('Synced user ID:', { email: authData.user.email, newId: authData.user.id })
-      } else {
-        await supabase.auth.signOut()
-        return NextResponse.json(
-          { error: 'Không tìm thấy thông tin người dùng' },
-          { status: 404 }
-        )
-      }
+    // Extract user metadata
+    const userMetadata = data.user.user_metadata || {}
+    const user = {
+      id: data.user.id,
+      email: data.user.email,
+      full_name: userMetadata.full_name || data.user.email?.split('@')[0],
+      team: userMetadata.team || 'Admin',
+      role: userMetadata.role || 'user'
     }
 
-    // All users can login to main dashboard
-    // Team-specific access will be handled in UI
+    console.log('Login successful for user:', user)
 
-    // Success
+    // Return session info (Supabase handles JWT automatically)
     return NextResponse.json({
       success: true,
-      user: {
-        id: authData.user.id,
-        email: authData.user.email,
-        full_name: userProfile.full_name,
-        team: userProfile.team,
-        role: userProfile.role
-      }
+      user: user,
+      session: data.session
     })
 
   } catch (error) {

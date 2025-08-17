@@ -1,47 +1,101 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { supabase } from '@/lib/supabase'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+  const router = useRouter()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
     setError('')
 
+    // Trim email to remove any leading/trailing whitespace
+    const trimmedEmail = email.trim()
+    const trimmedPassword = password.trim()
+
     try {
-      console.log('Starting login API call...')
+      console.log('Starting login process...')
       
-      const response = await fetch('/api/auth/login', {
+      // Step 1: Authenticate with Supabase Auth
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: trimmedEmail,
+        password: trimmedPassword,
+      })
+
+      console.log('Auth result:', { user: !!data.user, error: error?.message })
+
+      if (error || !data.user) {
+        setError('Email hoặc mật khẩu không đúng')
+        return
+      }
+
+      console.log('User authenticated, checking profile...')
+      
+      // Step 2: Check if user exists in users table and get team info
+      const { data: userProfile, error: profileError } = await supabase
+        .from('users')
+        .select('team, role, full_name')
+        .eq('id', data.user.id)
+        .single()
+
+      console.log('Profile result:', { profile: userProfile, error: profileError?.message })
+
+      if (profileError || !userProfile) {
+        setError('Không tìm thấy thông tin người dùng trong hệ thống')
+        await supabase.auth.signOut()
+        return
+      }
+
+      console.log('User profile found:', userProfile)
+      
+      // Step 3: Check team access for Digital CRM
+      if (userProfile.team !== 'b') {
+        setError('Bạn không có quyền truy cập module Digital CRM')
+        await supabase.auth.signOut()
+        return
+      }
+
+      console.log('Access granted, creating session...')
+      
+      // Step 4: Create JWT token for middleware
+      const tokenPayload = {
+        id: data.user.id,
+        email: data.user.email,
+        full_name: userProfile.full_name,
+        team: userProfile.team,
+        role: userProfile.role
+      }
+      
+      // Call API to create JWT token
+      const tokenResponse = await fetch('/api/auth/create-token', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify(tokenPayload)
       })
-
-      console.log('Login API response status:', response.status)
-
-      const data = await response.json()
-      console.log('Login API response data:', data)
-
-      if (!response.ok) {
-        setError(data.error || 'Đã xảy ra lỗi')
+      
+      if (!tokenResponse.ok) {
+        setError('Lỗi tạo phiên đăng nhập')
+        await supabase.auth.signOut()
         return
       }
-
-      if (data.success) {
-        console.log('Login successful, redirecting to dashboard...')
-        // Redirect to dashboard
-        window.location.href = '/dashboard'
-      }
+      
+      console.log('Session created, redirecting to dashboard...')
+      
+      // Step 5: Redirect to dashboard
+      router.push('/dashboard')
+        
     } catch (err) {
-      console.error('Login fetch error:', err)
-      setError('Không thể kết nối đến server')
+      console.error('Login error:', err)
+      setError('Đã xảy ra lỗi. Vui lòng thử lại.')
     } finally {
       setIsLoading(false)
     }

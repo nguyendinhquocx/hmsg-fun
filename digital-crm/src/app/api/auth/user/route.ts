@@ -3,28 +3,35 @@ import { createServerSupabaseClient } from '@/lib/supabase-server'
 
 export async function GET(request: NextRequest) {
   try {
+    console.log('=== GET USER API CALLED ===')
+    
     const supabase = await createServerSupabaseClient()
     
-    // Get authenticated user
-    const { data: { user: authUser }, error: authError } = await supabase.auth.getUser()
+    // Get current user from Supabase Auth
+    const { data: { user }, error } = await supabase.auth.getUser()
     
-    if (authError || !authUser) {
+    console.log('Supabase getUser result - error:', error?.message || null)
+    console.log('Supabase getUser result - user:', user ? 'Found user' : 'No user')
+    
+    if (error || !user) {
+      console.log('No authenticated user found')
       return NextResponse.json({ user: null })
     }
 
-    // Get user profile
-    const { data: userProfile, error: profileError } = await supabase
-      .from('users')
-      .select('id, email, full_name, team, role')
-      .eq('id', authUser.id)
-      .single()
-
-    if (profileError || !userProfile) {
-      return NextResponse.json({ user: null })
+    // Extract user metadata and format response
+    const userMetadata = user.user_metadata || {}
+    const formattedUser = {
+      id: user.id,
+      email: user.email,
+      full_name: userMetadata.full_name || user.email?.split('@')[0],
+      team: userMetadata.team || 'Admin',
+      role: userMetadata.role || 'user'
     }
+
+    console.log('Returning formatted user:', formattedUser)
 
     return NextResponse.json({ 
-      user: userProfile
+      user: formattedUser
     })
 
   } catch (error) {
