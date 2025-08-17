@@ -79,7 +79,7 @@ export default function CompanyTable() {
 
       if (error) throw error
       setCompanies(data || [])
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error fetching companies:', error.message || error)
     } finally {
       setIsLoading(false)

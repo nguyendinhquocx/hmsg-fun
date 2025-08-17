@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import { LogOut, Settings, User, Key } from 'lucide-react'
 import ChangePasswordModal from '@/components/auth/change-password-modal'
@@ -22,6 +22,19 @@ export default function Header({ user }: HeaderProps) {
   const [showChangePassword, setShowChangePassword] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
+  const menuRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setShowUserMenu(false)
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [menuRef])
 
   const handleLogout = async () => {
     try {
@@ -59,16 +72,16 @@ export default function Header({ user }: HeaderProps) {
 
           <div className="flex items-center space-x-4">
             {user && (
-              <div className="relative">
+              <div className="relative" ref={menuRef}>
                 <button
                   onClick={() => setShowUserMenu(!showUserMenu)}
-                  className="flex items-center space-x-2 text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  className="flex items-center space-x-2 text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 p-2 hover:bg-gray-100 transition-colors duration-200"
                 >
                   <span className="text-gray-700 font-medium">{user.full_name}</span>
                 </button>
 
                 {showUserMenu && (
-                  <div className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <div className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg focus:outline-none">
                     {user.role === 'admin' && (
                       <button
                         onClick={() => {
