@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS public.companies (
   contact_person TEXT,
   contact_email TEXT,
   contact_phone TEXT,
-  team TEXT NOT NULL DEFAULT 'b',
+  team TEXT NOT NULL DEFAULT 'CHC',
   status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'inactive', 'potential')),
   notes TEXT DEFAULT '',
   created_by UUID NOT NULL REFERENCES public.users(id),
@@ -77,7 +77,7 @@ CREATE POLICY "Team b users can access companies" ON public.companies
     EXISTS (
       SELECT 1 FROM public.users 
       WHERE id = auth.uid() 
-      AND team = 'b'
+      AND team = 'CHC'
     )
   );
 

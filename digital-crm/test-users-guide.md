@@ -14,7 +14,7 @@
 ```json
 {
   "full_name": "Test User",
-  "team": "b",
+  "team": "CHC",
   "role": "user"
 }
 ```
@@ -26,7 +26,7 @@
 ```json
 {
   "full_name": "Admin User",
-  "team": "b",
+  "team": "CHC",
   "role": "admin"
 }
 ```
@@ -113,7 +113,7 @@ Kiểm tra console logs để debug:
 
 ## Lưu ý
 
-- Team 'b' có quyền truy cập Digital CRM
-- Team khác 'b' sẽ bị từ chối truy cập
+- Team 'CHC' có quyền truy cập Digital CRM
+- Team khác 'CHC' sẽ bị từ chối truy cập
 - User metadata phải có đầy đủ: full_name, team, role
 - Public.users table phải sync với auth.users metadata

@@ -38,7 +38,7 @@ Sau đó tạo test user qua Supabase Dashboard:
 ```json
 {
   "full_name": "Test User",
-  "team": "b",
+  "team": "CHC",
   "role": "user"
 }
 ```
@@ -58,7 +58,7 @@ Starting login process...
 Auth result: { user: true, error: undefined }
 User authenticated, checking profile...
 Profile result: { profile: {...}, error: undefined }
-User profile found: { team: 'b', role: 'user', full_name: 'Test User' }
+User profile found: { team: 'CHC', role: 'user', full_name: 'Test User' }
 Access granted, creating session...
 Session created, redirecting to dashboard...
 ```
@@ -103,7 +103,7 @@ curl -X POST http://localhost:3003/api/auth/create-token \
     "id": "test-id",
     "email": "test@example.com",
     "full_name": "Test User",
-    "team": "b",
+    "team": "CHC",
     "role": "user"
   }'
 ```

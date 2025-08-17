@@ -1,0 +1,21 @@
+{
+  "name": "hoanmy-staff-creator",
+  "version": "1.0.0",
+  "description": "Script tự động tạo nhân viên Hoàn Mỹ qua API",
+  "main": "create-staff-api.js",
+  "scripts": {
+    "create-staff": "node create-staff-api.js",
+    "install-deps": "npm install node-fetch"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.7"
+  },
+  "keywords": [
+    "hoanmy",
+    "staff",
+    "automation",
+    "supabase"
+  ],
+  "author": "Digital Team",
+  "license": "MIT"
+}

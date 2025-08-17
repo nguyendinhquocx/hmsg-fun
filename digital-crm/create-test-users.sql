@@ -52,7 +52,7 @@ INSERT INTO auth.users (
   NULL,
   NULL,
   '{"provider": "email", "providers": ["email"]}',
-  '{"full_name": "Test User", "team": "b", "role": "user"}',
+  '{"full_name": "Test User", "team": "CHC", "role": "user"}',
   FALSE,
   NOW(),
   NOW(),
@@ -119,7 +119,7 @@ INSERT INTO auth.users (
   NULL,
   NULL,
   '{"provider": "email", "providers": ["email"]}',
-  '{"full_name": "Admin User", "team": "b", "role": "admin"}',
+  '{"full_name": "Admin User", "team": "CHC", "role": "admin"}',
   FALSE,
   NOW(),
   NOW(),
@@ -135,7 +135,7 @@ INSERT INTO auth.users (
   NULL
 );
 
--- 3. Tạo user không có quyền truy cập (team khác 'b')
+-- 3. Tạo user không có quyền truy cập (team khác 'CHC')
 INSERT INTO auth.users (
   instance_id,
   id,
@@ -233,8 +233,8 @@ WHERE u.email IN ('test@example.com', 'admin@example.com', 'noaccess@example.com
 
 /*
 Test accounts created:
-1. test@example.com / password123 - team 'b', có quyền truy cập
-2. admin@example.com / admin123 - team 'b', có quyền truy cập
+1. test@example.com / password123 - team 'CHC', có quyền truy cập
+2. admin@example.com / admin123 - team 'CHC', có quyền truy cập
 3. noaccess@example.com / noaccess123 - team 'a', không có quyền truy cập
 
 Sử dụng các accounts này để test login flow.

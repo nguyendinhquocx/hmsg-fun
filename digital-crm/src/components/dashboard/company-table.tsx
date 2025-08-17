@@ -53,8 +53,8 @@ export default function CompanyTable() {
       const { data, error } = await supabase
         .from('companies')
         .select('*')
-        .eq('team', 'b')
-        .order('created_at', { ascending: false })
+      .eq('team', 'CHC')
+      .order('created_at', { ascending: false })
 
       if (error) throw error
       setCompanies(data || [])

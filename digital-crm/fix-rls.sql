@@ -23,7 +23,7 @@ CREATE POLICY "Team b users can access companies" ON companies
     EXISTS (
       SELECT 1 FROM users 
       WHERE id = auth.uid() 
-      AND team = 'b'
+      AND team = 'CHC'
     )
   );
 

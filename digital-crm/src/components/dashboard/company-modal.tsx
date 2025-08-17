@@ -103,7 +103,7 @@ export default function CompanyModal({ isOpen, onClose, company, onSave }: Compa
 
       const companyData = {
         ...formData,
-        team: 'b',
+        team: 'CHC',
         created_by: user.id,
         updated_at: new Date().toISOString()
       }

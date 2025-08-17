@@ -35,20 +35,20 @@ export default function StatsCards() {
         const { count: totalCompanies } = await supabase
           .from('companies')
           .select('*', { count: 'exact', head: true })
-          .eq('team', 'b')
+          .eq('team', 'CHC')
 
         // Companies this month
         const { count: companiesThisMonth } = await supabase
           .from('companies')
           .select('*', { count: 'exact', head: true })
-          .eq('team', 'b')
+          .eq('team', 'CHC')
           .gte('created_at', startOfMonth.toISOString())
 
         // Companies same month last year
         const { count: companiesLastYearMonth } = await supabase
           .from('companies')
           .select('*', { count: 'exact', head: true })
-          .eq('team', 'b')
+          .eq('team', 'CHC')
           .gte('created_at', startOfLastYearMonth.toISOString())
           .lte('created_at', endOfLastYearMonth.toISOString())
 

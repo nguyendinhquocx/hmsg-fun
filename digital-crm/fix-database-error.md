@@ -65,7 +65,7 @@ Nếu bạn muốn tạo toàn bộ database schema, chạy script `database/ini
 ```json
 {
   "full_name": "Test User",
-  "team": "b",
+  "team": "CHC",
   "role": "user"
 }
 ```
@@ -77,7 +77,7 @@ Nếu bạn muốn tạo toàn bộ database schema, chạy script `database/ini
 ```json
 {
   "full_name": "Admin User",
-  "team": "b",
+  "team": "CHC",
   "role": "admin"
 }
 ```
@@ -131,7 +131,7 @@ Sau khi tạo xong, test login tại `http://localhost:3003`:
 
 - Bảng `public.users` cần được tạo trước khi chạy bất kỳ script test nào
 - Trigger sẽ tự động sync user từ `auth.users` sang `public.users`
-- Team 'b' có quyền truy cập Digital CRM
+- Team 'CHC' có quyền truy cập Digital CRM
 - Metadata phải có đầy đủ: `full_name`, `team`, `role`
 
 ## Troubleshooting

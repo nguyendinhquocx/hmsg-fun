@@ -56,11 +56,11 @@ export default function LoginPage() {
       console.log('User profile found:', userProfile)
       
       // Step 3: Check team access for Digital CRM
-      if (userProfile.team !== 'b') {
-        setError('Bạn không có quyền truy cập module Digital CRM')
-        await supabase.auth.signOut()
-        return
-      }
+      if (userProfile.team !== 'CHC') {
+          setError('Bạn không có quyền truy cập module Digital CRM')
+          await supabase.auth.signOut()
+          return
+        }
 
       console.log('Access granted, creating session...')
       

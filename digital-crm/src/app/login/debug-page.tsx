@@ -68,7 +68,7 @@ export default function DebugLoginPage() {
         console.log('6. User profile found:', userProfile)
         setDebugInfo(prev => ({ ...prev, step5: `Team: ${userProfile.team}, Role: ${userProfile.role}` }))
 
-        if (userProfile.team !== 'b') {
+        if (userProfile.team !== 'CHC') {
           setError('Bạn không có quyền truy cập module Digital')
           await supabase.auth.signOut()
           return

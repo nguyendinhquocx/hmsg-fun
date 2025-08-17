@@ -5,7 +5,7 @@
 UPDATE auth.users 
 SET raw_user_meta_data = jsonb_build_object(
   'full_name', 'Administrator',
-  'team', 'b',
+  'team', 'CHC',
   'role', 'admin'
 )
 WHERE email = 'admin@hmsg.fun';
@@ -14,7 +14,7 @@ WHERE email = 'admin@hmsg.fun';
 UPDATE auth.users 
 SET raw_user_meta_data = jsonb_build_object(
   'full_name', 'Nhân viên Team B',
-  'team', 'b', 
+  'team', 'CHC', 
   'role', 'user'
 )
 WHERE email = 'user1@hmsg.fun';
