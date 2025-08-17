@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { Eye, EyeOff, AlertCircle } from 'lucide-react'
 
@@ -12,7 +11,6 @@ export default function DebugLoginPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [debugInfo, setDebugInfo] = useState<Record<string, unknown>>({})
-  const _router = useRouter()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()

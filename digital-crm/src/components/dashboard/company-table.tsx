@@ -69,22 +69,7 @@ export default function CompanyTable() {
     filterCompanies()
   }, [companies, searchTerm, statusFilter, filterCompanies])
 
-  const fetchCompanies = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('companies')
-        .select('*')
-        .eq('team', 'CHC')
-        .order('created_at', { ascending: false })
 
-      if (error) throw error
-      setCompanies(data || [])
-    } catch (error) {
-      console.error('Error fetching companies:', error.message || error)
-    } finally {
-      setIsLoading(false)
-    }
-  }
 
   const handleEdit = (company: Company) => {
     setSelectedCompany(company)
