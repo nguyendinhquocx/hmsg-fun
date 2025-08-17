@@ -23,7 +23,7 @@ export default function DebugPage() {
         } else {
           setAuthUser(user)
         }
-      } catch (err) {
+      } catch (_err) {
         setError('Error connecting to Supabase')
       }
     }
