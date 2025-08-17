@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import { LogOut, Settings, User, Key } from 'lucide-react'
 import ChangePasswordModal from '@/components/auth/change-password-modal'
@@ -13,29 +13,28 @@ interface User {
   role: string
 }
 
-export default function Header() {
-  const [user, setUser] = useState<User | null>(null)
+interface HeaderProps {
+  user: User | null
+}
+
+export default function Header({ user }: HeaderProps) {
   const [showUserMenu, setShowUserMenu] = useState(false)
   const [showChangePassword, setShowChangePassword] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
+  const menuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const getUser = async () => {
-      try {
-        const response = await fetch('/api/auth/user')
-        const data = await response.json()
-        
-        if (data.user) {
-          setUser(data.user)
-        }
-      } catch (error) {
-        console.error('Error fetching user:', error)
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setShowUserMenu(false)
       }
     }
-
-    getUser()
-  }, [])
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [menuRef])
 
   const handleLogout = async () => {
     try {
@@ -73,24 +72,16 @@ export default function Header() {
 
           <div className="flex items-center space-x-4">
             {user && (
-              <div className="relative">
+              <div className="relative" ref={menuRef}>
                 <button
                   onClick={() => setShowUserMenu(!showUserMenu)}
-                  className="flex items-center space-x-2 text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  className="flex items-center space-x-2 text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 p-2 hover:bg-gray-100 transition-colors duration-200"
                 >
-                  <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
-                    <User className="h-5 w-5 text-blue-600" />
-                  </div>
                   <span className="text-gray-700 font-medium">{user.full_name}</span>
                 </button>
 
                 {showUserMenu && (
-                  <div className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                    <div className="px-4 py-2 text-sm text-gray-500 border-b">
-                      <p className="font-medium text-gray-900">{user.email}</p>
-                      <p>Team {user.team.toUpperCase()} • {user.role === 'admin' ? 'Quản trị' : 'Người dùng'}</p>
-                    </div>
-                    
+                  <div className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg focus:outline-none">
                     {user.role === 'admin' && (
                       <button
                         onClick={() => {

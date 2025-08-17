@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { supabase } from '@/lib/supabase' // Added import
 
 interface ChangePasswordModalProps {
   isOpen: boolean
@@ -15,10 +16,29 @@ export default function ChangePasswordModal({ isOpen, onClose }: ChangePasswordM
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
 
+  const handleClose = () => {
+    setCurrentPassword('')
+    setNewPassword('')
+    setConfirmPassword('')
+    setError('')
+    setSuccess('')
+    onClose()
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
     setSuccess('')
+
+    // Added session retrieval logic
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      console.error('No active session found. Redirecting to login or showing error.');
+      setError('Không tìm thấy phiên hoạt động. Vui lòng đăng nhập lại.');
+      setIsLoading(false);
+      return;
+    }
+    const accessToken = session.access_token;
 
     if (newPassword !== confirmPassword) {
       setError('Mật khẩu mới không khớp')
@@ -37,6 +57,7 @@ export default function ChangePasswordModal({ isOpen, onClose }: ChangePasswordM
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`, // Added Authorization header
         },
         body: JSON.stringify({
           currentPassword,
@@ -48,12 +69,8 @@ export default function ChangePasswordModal({ isOpen, onClose }: ChangePasswordM
 
       if (response.ok) {
         setSuccess('Đổi mật khẩu thành công!')
-        setCurrentPassword('')
-        setNewPassword('')
-        setConfirmPassword('')
         setTimeout(() => {
-          onClose()
-          setSuccess('')
+          handleClose()
         }, 2000)
       } else {
         setError(data.error || 'Đã xảy ra lỗi')
@@ -73,7 +90,7 @@ export default function ChangePasswordModal({ isOpen, onClose }: ChangePasswordM
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold text-gray-900">Đổi mật khẩu</h2>
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="text-gray-400 hover:text-gray-600"
           >
             ✕
@@ -133,7 +150,7 @@ export default function ChangePasswordModal({ isOpen, onClose }: ChangePasswordM
           <div className="flex gap-3 pt-2">
             <button
               type="button"
-              onClick={onClose}
+              onClick={handleClose}
               className="flex-1 px-4 py-2 text-sm font-medium rounded border border-gray-300 bg-white text-black hover:bg-gray-50"
             >
               Hủy

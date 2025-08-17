@@ -61,7 +61,8 @@ export default function CompanyTable() {
   }, [companies, searchTerm, statusFilter])
 
   useEffect(() => {
-    fetchCompanies()
+    // fetchCompanies() // Temporarily disabled until the 'companies' table is created
+    setIsLoading(false) // Show table structure even without data
   }, [])
 
   useEffect(() => {
@@ -73,13 +74,13 @@ export default function CompanyTable() {
       const { data, error } = await supabase
         .from('companies')
         .select('*')
-      .eq('team', 'CHC')
-      .order('created_at', { ascending: false })
+        .eq('team', 'CHC')
+        .order('created_at', { ascending: false })
 
       if (error) throw error
       setCompanies(data || [])
     } catch (error) {
-      console.error('Error fetching companies:', error)
+      console.error('Error fetching companies:', error.message || error)
     } finally {
       setIsLoading(false)
     }
